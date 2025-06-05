@@ -18,11 +18,11 @@ const Homepage = () => {
     <Flex
       flexDirection="row"
       w="full"
-      h="100vh"
+      h="90vh"
       bg={{ base: "white", _dark: "gray.800" }}
       color="black"
       gap={4}
-      padding={4}
+      padding={2}
     >
       <SideBar />
 

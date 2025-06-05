@@ -40,16 +40,18 @@ export const useListStore = create<ListStore>((set) => ({
       });
       const data = await res.json();
 
+      
       set((state) => ({
         lists: [...state.lists, data.list],
       }));
+      return data.list;
     } catch (error) {
       console.error("Error creating list:", error);
     }
   },
   deleteList: async (id: string) => {
     try {
-      const res = await fetch(`/api/list/${id}`, {
+      await fetch(`/api/list/${id}`, {
         method: "DELETE",
       });
 
@@ -78,5 +80,6 @@ export const useListStore = create<ListStore>((set) => ({
     } catch (error) {
       console.error("Error updating list:", error);
     }
-  },
+  }
+
 }));

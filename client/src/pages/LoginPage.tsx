@@ -1,4 +1,5 @@
 
+import { PasswordInput } from "@/components/ui/password-input";
 import useShowToast from "@/hooks/useShowToast";
 import { useUserStore } from "@/stores/useUserStore";
 import type { AuthInput } from "@/type/UserInterface";
@@ -37,7 +38,6 @@ const LoginPage = () => {
     setIsLoading(true);
     e.preventDefault();
     if (loginState === "login") {
-        // Handle login logic
         if (!input.email || !input.password) {
             showToast("Please fill in all fields", "error");
             return;
@@ -52,8 +52,12 @@ const LoginPage = () => {
             });
             const data = await res.json();
             
-           
-            setUser(data.user);
+            if (!res.ok) {
+                showToast(data.message || "Login failed", "error");
+                setIsLoading(false);
+                return;
+            }
+             setUser(data.user);
             navigate("/")
             showToast(data.message, "success");
         } catch (error) {
@@ -95,20 +99,24 @@ const LoginPage = () => {
 }
 
   return (
-    <Flex align="center" justify="center" h="100vh">
+    <Flex align="center" justify="center" h="100vh" maxW={"100%"} backgroundImage={"linear-gradient(to right, #12c2e9, #c471ed, #f64f59);"}  >
       <Stack gap={4} mx={"auto"} maxW={"lg"} py={12} px={6} >
         <Stack align="center">
           <Heading
             fontSize="4xl"
             textAlign="center"
-            color={{ base: "black", _dark: "white" }}
+            color={"white"}
+            textTransform={"uppercase"}
+            fontWeight="bold"
+            letterSpacing="wider"
+            
           >
            {loginState!=="login"? "Sign Up":"Login"}
           </Heading>
         </Stack>
         <Box
           rounded={"lg"}
-          bg={{ base: "gray.800", _dark: "gray.700" }}
+          bg={"white"}
 
           boxShadow="lg"
           p={8}
@@ -119,34 +127,34 @@ const LoginPage = () => {
             <VStack gap={4} w="full">
               
                 {loginState !=="login" && <Field.Root required>
-                  <Field.Label color={{ base: "black", _dark: "white" }}>
+                  <Field.Label color={"purple.600"} >
                     Username
                     <Field.RequiredIndicator />
                   </Field.Label>
-                  <Input  onChange={(e)=>setInput({...input,username:e.target.value})}/>
+                  <Input color={"purple.500"}  onChange={(e)=>setInput({...input,username:e.target.value})}/>
                 </Field.Root>}
                 <Field.Root required>
-                  <Field.Label color={{ base: "black", _dark: "white" }}>
+                  <Field.Label color={"purple.600"}>
                     Email
                     <Field.RequiredIndicator />
                   </Field.Label>
-                  <Input placeholder="me@example.com" onChange={(e)=>setInput({...input,email:e.target.value})}/>
+                  <Input placeholder="me@example.com" color={"purple.500"} onChange={(e)=>setInput({...input,email:e.target.value})}/>
                 </Field.Root>
                 <Field.Root required>
-                  <Field.Label color={{ base: "black", _dark: "white" }}>
+                  <Field.Label color={"purple.600"}>
                     Password
                     <Field.RequiredIndicator />
                   </Field.Label>
-                  <Input onChange={(e)=>setInput({...input,password:e.target.value})}/>
+                  <PasswordInput color={"purple.500"} onChange={(e)=>setInput({...input,password:e.target.value})} />
                 </Field.Root>
                 <Text textAlign="start" w={"full"} color="gray.500">
                     {loginState!=="login"? "Already have an account?": "Don't have an account?"}{" "}
-                    <strong className="hover:cursor-pointer text-green-500" onClick={() => setLoginState(loginState!=="login" ? "login" : "signup")}>
+                    <strong className="hover:cursor-pointer text-pink-500" onClick={() => setLoginState(loginState!=="login" ? "login" : "signup")}>
                       {loginState!=="login"? "Login here": "Sign Up here"}
                     </strong>
                 </Text>
                 <HStack justifyContent="center" w="full">
-                    <Button type="submit" onClick={handleSubmit} loading={isLoading}>
+                    <Button type="submit" onClick={handleSubmit} loading={isLoading} colorPalette={"purple"} w="full" >
                         {loginState!=="login"? "Sign Up":"Login"}
                     </Button>
                    

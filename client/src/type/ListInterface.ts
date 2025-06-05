@@ -18,6 +18,7 @@ export interface ColumnProps {
 
 export interface ColumnDialogProps {
   listId?: string;
+  name?: string;
 }
 
 export interface ListStore {
@@ -26,9 +27,10 @@ export interface ListStore {
   setLists: (
     updater: filteredList[] | ((prev: filteredList[]) => filteredList[])
   ) => void;
-  createList: (name: string, boardId: string) => Promise<void>;
+  createList: (name: string, boardId: string) => Promise<List>;
   getAllLists: () => Promise<void>;
   deleteList: (id: string) => Promise<void>;
   getListByBoardId: (boardId: string) => Promise<void>;
   updateList: (id: string, name: string) => Promise<void>;
+  
 }

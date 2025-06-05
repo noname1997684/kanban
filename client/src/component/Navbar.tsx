@@ -3,6 +3,8 @@ import {
   Box,
   Button,
   Flex,
+  IconButton,
+  Input,
   Menu,
   Portal,
   Text,
@@ -12,8 +14,10 @@ import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import { useUserStore } from "@/stores/useUserStore";
 import { useBoardStore } from "@/stores/useBoardStore";
-
+import useShowToast from "@/hooks/useShowToast";
+import { FaSearch } from "react-icons/fa";
 const Navbar = () => {
+  // sửa dùng useUserStore để lấy user
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const navigate = useNavigate();
   const ref = useRef<HTMLDivElement>(null);
@@ -21,8 +25,10 @@ const Navbar = () => {
   const { logout } = useUserStore();
   const [searchInput, setSearchInput] = useState<string>("");
   const { boards, setSelectedBoard } = useBoardStore();
+  const { showToast } = useShowToast();
   const logoutClick = () => {
     logout();
+    setSelectedBoard(null);
     localStorage.removeItem("user");
     navigate("/login");
   };
@@ -37,7 +43,7 @@ const Navbar = () => {
     if (foundBoard) {
       setSelectedBoard(foundBoard);
     } else {
-      alert("No board found with that name");
+      showToast("Board not found", "error");
     }
   };
   return (
@@ -55,16 +61,28 @@ const Navbar = () => {
           Kanban
         </Text>
       </Box>
-      <Flex alignItems="center" gap={4}>
-        <input
+      <Flex alignItems="center" gap={2}>
+        <Input
           type="text"
           placeholder="Search..."
           className="p-2 rounded-md"
+          w={["100%", "300px", "400px"]}
+          border={"1px solid"}
+          borderColor="blue.200"
+          h={8}
+          bg={{ base: "white", _dark: "gray.700" }}
           onChange={(e) => setSearchInput(e.target.value)}
         />
-        <Button variant="solid" colorScheme="blue" ml={2} onClick={searchClick}>
-          Search
-        </Button>
+        <IconButton
+          variant="solid"
+          colorPalette="blue"
+          w={10}
+          h={10}
+          rounded={"full"}
+          onClick={searchClick}
+        >
+          <FaSearch />
+        </IconButton>
       </Flex>
       <Flex alignItems="center" gap={4}>
         {user && user.username ? (

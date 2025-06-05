@@ -1,7 +1,7 @@
 import Navbar from "./component/Navbar";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { Toaster } from "./components/ui/toaster";
-import { Container, Flex } from "@chakra-ui/react";
+import { Box, Container, Flex } from "@chakra-ui/react";
 import Homepage from "./pages/Homepage";
 import LoginPage from "./pages/LoginPage";
 function App() {
@@ -16,20 +16,21 @@ function App() {
       h={"100vh"}
       bg={{ base: "white", _dark: "gray.800" }}
     >
-      {pathname !== "/login" && <Navbar />}
-      <Container
+      {pathname !== "/login"  && <Navbar />}
+      <Box
         maxW="100%"
+
         bg={{ base: "white", _dark: "gray.800" }}
         color="black"
       >
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          <Route path="/" element={user ? <Homepage />:<Navigate to={"/login"}/>} />
           <Route
             path="/login"
             element={!user ? <LoginPage /> : <Navigate to={"/"} />}
           />
         </Routes>
-      </Container>
+      </Box>
       <Toaster />
     </Flex>
   );

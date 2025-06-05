@@ -10,9 +10,13 @@ export const useBoardStore = create<BoardState>((set) => ({
       set({ boards: updater });
     }
   },
-  setSelectedBoard: (board: Board) => {
+
+  
+  setSelectedBoard: (board: Board|null) => {
     set(() => ({ selectedBoard: board }));
   },
+
+
   getBoardsByUserId: async (userId: string) => {
     try {
       const res = await fetch(`/api/board/${userId}`);
@@ -22,6 +26,8 @@ export const useBoardStore = create<BoardState>((set) => ({
       console.error("Error fetching boards:", error);
     }
   },
+
+
   createBoard: async (name: string, userId: string) => {
     try {
       const res = await fetch("/api/board", {
@@ -40,6 +46,8 @@ export const useBoardStore = create<BoardState>((set) => ({
       console.error("Error creating board:", error);
     }
   },
+
+  
   updateBoard: async (id: string, name: string) => {
     try {
       const res = await fetch(`/api/board/${id}`, {
@@ -56,10 +64,13 @@ export const useBoardStore = create<BoardState>((set) => ({
           board.id === id ? { ...board, name: data.board.name } : board
         ),
       }));
+      return data.board;
     } catch (error) {
       console.error("Error updating board:", error);
     }
   },
+
+
   deleteBoard: async (id: string) => {
     try {
       await fetch(`/api/board/${id}`, {

@@ -3,7 +3,7 @@ import Board from '../models/boardModel';
 import User from '../models/userModel';
 import List from '../models/listModel';
 import { CreateBoardRequest, CreateBoardResponse, DeleteBoardRequest, DeleteBoardResponse, getBoardByUserIdRequest, getBoardByUserIdResponse, UpdateBoardRequest, UpdateBoardResponse } from '../interfaces/controllers/boardInterface';
-import { Document} from 'mongoose';
+import { Document, Types} from 'mongoose';
 
 export const getBoardByUserId = async (req:getBoardByUserIdRequest, res:getBoardByUserIdResponse) => {
     try {
@@ -17,7 +17,7 @@ export const getBoardByUserId = async (req:getBoardByUserIdRequest, res:getBoard
             id: board._id.toString(),
             name: board.name,
             userId: board.userId.toString(),
-            lists: board.lists.map((list: any) => list._id ? list._id.toString() : list.toString())
+            lists: board.lists.map((list) => list._id ? list._id.toString() : list.toString())
         }));
 
         return res.status(200).json({ boards: formattedBoards });
@@ -77,7 +77,7 @@ export const updateBoard = async (req:UpdateBoardRequest, res:UpdateBoardRespons
                 id: updatedBoard._id.toString(),
                 name: updatedBoard.name,
                 userId: updatedBoard.userId.toString(),
-                lists: updatedBoard.lists.map((listId: any) => listId.toString())
+                lists: updatedBoard.lists.map((listId) => listId.toString())
             }
         });
     } catch (error) {
